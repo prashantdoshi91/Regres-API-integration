@@ -19,12 +19,12 @@ It demonstrates best practices in API consumption, async programming, error hand
 
 ## 🗂️ Project Structure
 
-ReqresIntegration.sln
-│
-├── ReqresIntegration.Core # Models and interfaces
-├── ReqresIntegration.Infrastructure # API client, service logic, caching
-├── ReqresIntegration.ConsoleDemo # Example usage console app
-└── ReqresIntegration.Tests # Unit tests
+ReqresIntegration.sln <br>
+│ <br>
+├── ReqresIntegration.Core # Models and interfaces <br>
+├── ReqresIntegration.Infrastructure # API client, service logic, caching <br>
+├── ReqresIntegration.ConsoleDemo # Example usage console app <br>
+└── ReqresIntegration.Tests # Unit tests <br>
 
 
 
@@ -32,7 +32,7 @@ ReqresIntegration.sln
 
 ## ⚙️ Prerequisites
 
-- [.NET 6 SDK](https://dotnet.microsoft.com/download)
+- [.NET 9 SDK](https://dotnet.microsoft.com/download)
 - Git (if cloning)
 - Optional: Visual Studio, Rider, or VS Code
 
@@ -42,7 +42,7 @@ ReqresIntegration.sln
 
 ### 1. Clone the Repository
 
-git clone <your-github-url>
+gh repo clone prashantdoshi91/Regres-API-integration
 cd ReqresIntegration
 
 ### 2. Restore Packages
@@ -67,12 +67,14 @@ dotnet test ReqresIntegration.Tests
 
 appsettings.json (used by the console demo):
 
+```json
 {
   "ReqresApi": {
     "BaseUrl": "https://reqres.in/api/",
     "ApiKey": "reqres-free-v1"
   }
 }
+```
 
 
 ## 🧠 Design Decisions
@@ -85,16 +87,15 @@ Async/await is used throughout for modern non-blocking IO.
 
 Optional caching via IMemoryCache improves performance for repeated calls.
 
-Extensible for adding Polly retry logic or API auth headers later.
+Extensible for adding Polly retry logic.
 
 
-## 🏆 Bonus Features (Optional)
+
+## 🏆 Bonus Features
 
 In-memory caching with CachedExternalUserService
 
 Configurable base URL using IOptions<T>
 
 Fully testable and mockable components
-
-Designed to be plugged into larger systems (e.g., ASP.NET Core app)
 
