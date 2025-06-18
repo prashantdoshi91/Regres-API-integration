@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "ReqresIntegration.ConsoleDemo": {
+      "commandName": "Project",
+      "commandLineArgs": "test"
+    }
+  }
+}
