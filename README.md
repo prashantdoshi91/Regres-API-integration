@@ -1,4 +1,4 @@
-# ReqresIntegration
+# Reqres Integration
 
 A .NET 9 class library that integrates with the public [reqres.in](https://reqres.in) API to fetch and display user data. 
 It demonstrates best practices in API consumption, async programming, error handling, optional caching, and testability.
