@@ -1,15 +1,9 @@
-﻿using Microsoft.Extensions.Caching.Memory;
-using Microsoft.Extensions.Configuration;
+﻿using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
-using Polly;
-using Polly.Extensions.Http;
 using ReqresIntegration.Core.Interfaces;
-using ReqresIntegration.Infrastructure.ApiClients;
-using ReqresIntegration.Infrastructure.Configuration;
-using ReqresIntegration.Infrastructure.Interfaces;
-using ReqresIntegration.Infrastructure.Services;
+using ReqresIntegration.Infrastructure.ServiceExtension;
 
 namespace ReqresIntegration.ConsoleDemo
 {
@@ -47,35 +41,13 @@ namespace ReqresIntegration.ConsoleDemo
                     {
                         var config = context.Configuration;
 
-                        services.Configure<ReqresApiOptions>(config.GetSection("ReqresApi"));
+                        services.AddReqresClient(config);
 
-                        services.AddHttpClient("ReqresClient", client =>
-                        {
-                            client.DefaultRequestHeaders.Add("Accept", "application/json");
-                        })
-                        .AddPolicyHandler(HttpPolicyExtensions
-                            .HandleTransientHttpError() // Handles 5xx and network failures and timeout error
-                            .WaitAndRetryAsync(
-                                retryCount: 3,
-                                sleepDurationProvider: attempt => TimeSpan.FromSeconds(3),
-                                onRetry: (outcome, timespan, retryAttempt, context) =>
-                                {
-                                    Console.WriteLine($"⚠️ Retry {retryAttempt} after {timespan.TotalSeconds}s due to {outcome.Exception?.Message ?? outcome.Result.StatusCode.ToString()}");
-                                })
-                        );
-
-                        services.AddScoped<IReqresApiClient, ReqresApiClient>();
-                        //services.AddScoped<IExternalUserService, ExternalUserService>();
+                        // use this for without caching
+                        //services.UseExternalUserService();
 
                         // Optional: Add caching version
-                        services.AddMemoryCache();
-                        services.AddScoped<ExternalUserService>();
-                        services.AddScoped<IExternalUserService>(sp =>
-                        {
-                            var inner = sp.GetRequiredService<ExternalUserService>();
-                            var cache = sp.GetRequiredService<IMemoryCache>();
-                            return new CachedExternalUserService(inner, cache);
-                        });
+                        services.UseCachedExternalUserService();
                     })
                     .ConfigureLogging(logging =>
                     {
